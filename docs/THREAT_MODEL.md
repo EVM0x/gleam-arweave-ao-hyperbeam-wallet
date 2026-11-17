@@ -315,9 +315,13 @@ count as a finding.
     and `events` are polyfilled). A production build contains no
     elliptic code: its curve constants, error strings and `HmacDRBG` are
     absent from `.output/chrome-mv3`.
-  - `deepmerge` 4.3.1 (GHSA-gcqx-w48m-w2h4): it comes only through
-    `wxt` → `web-ext` → `addons-linter`, a development tool, and isn't in
-    the build. Its ignore runs until 2027-04-28.
+  - `picomatch` ≤ 4.0.7 (GHSA-fc5q-39xc-vjpf): a ReDoS through
+    single-branch repeated extglobs, with no patched release. It reaches
+    only build and dev tooling: `wxt`'s rollup visualizer, the
+    `@rollup/pluginutils` behind `vite-plugin-node-polyfills`,
+    `eslint` and `dependency-cruiser`. The pattern that triggers it is
+    one the tool's own operator writes, never one a page supplies, and
+    none of it is in the build. Its ignore runs until 2027-01-31.
   - `minimatch` (GHSA-g3hv-75wg-m249): fixed only in 11.0.1, a major that
     `eslint` and `typescript-estree` don't accept. It reaches only lint and
     `web-ext` tooling, which match the repository's own globs, and isn't
